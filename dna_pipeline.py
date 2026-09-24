@@ -1,28 +1,64 @@
 #this is dna_pipeline.py
-#first Python-based bioinformatics pipeline by using reusable functions and Python libraries like pandas or NumPy.
+#Python-based bioinformatics pipeline by using reusable functions and Python libraries like pandas or NumPy.
 
+
+#imported libraries
 import pandas 
 import NumPy
 
-def data_loading():
-    #Create a function to read DNA sequences from a provided FASTA file
+
+#created the dictionary to hold file contents
+genes_and_sequences = {}
+
+#Create a function to read DNA sequences from a provided FASTA file
     #(/home/rbif/week5/sequences.fasta) into a Python data structure. 
-    #You may use a list or dictionary to store your data clearly.
+#You may use a list or dictionary to store your data clearly.
+def load_data():
+
+    #open the target .fasta
+    with open ("sequences.fasta", "r") as file:
+        
+        #created the key and value variables for the dictionary
+        gene_name = ""
+        sequence = ""
+        
+        for line in file:
+            #creating a loop for each line in the open file
+            line = line.strip()
+
+            #using ">" to target the gene name
+            if line.startswith(">"):
+                #save previous gene
+                if gene_name:
+                    genes_and_sequences[gene_name] = sequence
+
+                #starts new gene
+                gene_name = line[1:]
+                sequence = ""
+            
+            else:
+
+        #used to capture last gene
+        if gene_name:
+            genes_and_sequences[gene_name] = sequence
     
+    print(genes_and_sequences)
 
-def sequence_filtering():
-    #implement a function to filter the sequences, 
+
+#implement a function to filter the sequences, 
     #keeping only those sequences longer than 100 nucleotides.
+#def sequence_filtering():
 
-def analysis():
-    #write a function to calculate the GC-content 
+#write a function to calculate the GC-content 
     #(percentage of nucleotides that are either G or C) for each sequence.
-
-def summary_and_saving_results():
-    #Write a function that generates a summary table or dataframe (use pandas)
+#def analysis():
+    
+#Write a function that generates a summary table or dataframe (use pandas)
     #showing the sequence ID, length, and GC-content for each filtered sequence.
     #Save the summary table into a CSV file named sequence_summary.csv.
+#def summary_and_saving_results():
+    
 
 #Your script should clearly indicate the order of steps (pipeline) 
-#by calling these functions sequentially in a main function or
-#a clearly structured code block (if __name__ == "__main__":).
+    #by calling these functions sequentially in a main function or
+    #a clearly structured code block (if __name__ == "__main__":).

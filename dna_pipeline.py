@@ -45,7 +45,7 @@ def load_data():
         if gene_name:
             genes_and_sequences[gene_name] = sequence
     
-    print(genes_and_sequences)
+    #print(genes_and_sequences)
 
 
 #implement a function to filter the sequences, 
@@ -55,14 +55,14 @@ def filter_sequences():
         if len(sequence) <= 100:
             del genes_and_sequences[gene_name]
 
-    print(genes_and_sequences)
+    #print(genes_and_sequences)
 
 #write a function to calculate the GC-content 
     #(percentage of nucleotides that are either G or C) for each sequence.
 def get_gc_content(gene_name, sequence):
     gc_count = sequence.count("G") + sequence.count("C")
     gc_percentage = (gc_count / len(sequence)) * 100
-    print(f"{gene_name}: GC-content = {gc_percentage:.2f}%")
+    #print(f"{gene_name}: GC-content = {gc_percentage:.2f}%")
     return gc_percentage
 
     
@@ -74,7 +74,7 @@ def summary_and_saving_results():
 
     data['sequence ID'] = list(genes_and_sequences.keys())
     data['length'] = [len(seq) for seq in genes_and_sequences.values()]
-    data['GC-content'] = [get_gc_content(gene_name, sequence) for gene_name, seq in genes_and_sequences.items()]
+    data['GC-content'] = [get_gc_content(gene_name, sequence) for gene_name, sequence in genes_and_sequences.items()]
 
     df = pd.DataFrame(data)
     df.to_csv("sequence_summary.csv", index=False)
@@ -87,5 +87,4 @@ def summary_and_saving_results():
 if __name__ == "__main__":
     load_data()
     filter_sequences()
-    get_gc_content()
     summary_and_saving_results()

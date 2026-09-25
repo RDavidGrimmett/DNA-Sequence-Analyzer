@@ -2,88 +2,78 @@
 #Python-based bioinformatics pipeline by using reusable functions and Python libraries like pandas or NumPy.
 
 
-#imported libraries
+#Imported libraries
 import pandas as pd
-#import NumPy
 
+#Variable to hold the target .fasta file
 target_file = "sequences.fasta"
 
-#created the dictionary to hold file contents
+#Created the dictionary to hold file contents
 genes_and_sequences = {}
 
-#Create a function to read DNA sequences from a provided FASTA file
-    #(/home/rbif/week5/sequences.fasta) into a Python data structure. 
-#You may use a list or dictionary to store your data clearly.
+#Reads DNA sequences from a provided FASTA file 
 def load_data():
 
-    #open the target .fasta
+    #Open the target .fasta
     with open (target_file, "r") as file:
         
-        #created the key and value variables for the dictionary
+        #Created the key and value variables for the dictionary
         gene_name = ""
         sequence = ""
         
         for line in file:
-            #creating a loop for each line in the open file
+            #Creating a loop for each line in the open file
             line = line.strip()
 
-            #using ">" to target the gene name
+            #Using ">" to target the gene name
             if line.startswith(">"):
-                #save previous gene
+                #Save previous gene
                 if gene_name:
                     genes_and_sequences[gene_name] = sequence
 
-                #starts new gene
+                #Starts new gene
                 gene_name = line[1:]
                 sequence = ""
             
             else:
-                #add the sequence to the current gene
+                #Add the sequence to the current gene
                 sequence += line
 
-        #used to capture last gene
+        #Captures last gene
         if gene_name:
             genes_and_sequences[gene_name] = sequence
     
-    #print(genes_and_sequences)
 
-
-#implement a function to filter the sequences, 
-    #keeping only those sequences longer than 100 nucleotides.
+#Filters the sequences keeping only sequences longer than 100 nucleotides
 def filter_sequences():
+    #Iterates through the dictionary removing sequences that are <= 100 nucleotides long
     for gene_name, sequence in list(genes_and_sequences.items()):
         if len(sequence) <= 100:
             del genes_and_sequences[gene_name]
 
-    #print(genes_and_sequences)
 
-#write a function to calculate the GC-content 
-    #(percentage of nucleotides that are either G or C) for each sequence.
+#Calculates the GC-content of a each sequence
 def get_gc_content(gene_name, sequence):
+    #counts "G" and "C" in the sequence and calculates the percentage
     gc_count = sequence.count("G") + sequence.count("C")
     gc_percentage = (gc_count / len(sequence)) * 100
-    #print(f"{gene_name}: GC-content = {gc_percentage:.2f}%")
+
     return gc_percentage
 
     
-#Write a function that generates a summary table or dataframe (use pandas)
-    #showing the sequence ID, length, and GC-content for each filtered sequence.
-    #Save the summary table into a CSV file named sequence_summary.csv.
+#Generates a summary table or dataframe (use pandas) and saves it to sequence_summary.csv.
 def summary_and_saving_results():
+    #setting up the data dictionary to hold the summary information
     data = {'sequence ID': [], 'length': [], 'GC-content': []}
-
+    #adding sequence ID, length, and GC-content for each gene
     data['sequence ID'] = list(genes_and_sequences.keys())
     data['length'] = [len(seq) for seq in genes_and_sequences.values()]
     data['GC-content'] = [get_gc_content(gene_name, sequence) for gene_name, sequence in genes_and_sequences.items()]
-
+    #creating a pandas dataframe and saving it to a CSV file
     df = pd.DataFrame(data)
     df.to_csv("sequence_summary.csv", index=False)
 
-#Your script should clearly indicate the order of steps (pipeline) 
-    #by calling these functions sequentially in a main function or
-    #a clearly structured code block (if __name__ == "__main__":).
-
-
+#running the pipeline functions in order
 if __name__ == "__main__":
     load_data()
     filter_sequences()

@@ -50,7 +50,10 @@ def load_data():
 
 #implement a function to filter the sequences, 
     #keeping only those sequences longer than 100 nucleotides.
-#def sequence_filtering():
+def filter_sequences():
+    for gene_name, sequence in list(genes_and_sequences.items()):
+        if len(sequence) <= 100:
+            del genes_and_sequences[gene_name]
 
 #write a function to calculate the GC-content 
     #(percentage of nucleotides that are either G or C) for each sequence.
@@ -69,3 +72,4 @@ def load_data():
 
 if __name__ == "__main__":
     load_data()
+    filter_sequences()

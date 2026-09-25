@@ -3,9 +3,10 @@
 
 
 #imported libraries
-import pandas 
-import NumPy
+#import pandas 
+#import NumPy
 
+target_file = "sequences.fasta"
 
 #created the dictionary to hold file contents
 genes_and_sequences = {}
@@ -16,7 +17,7 @@ genes_and_sequences = {}
 def load_data():
 
     #open the target .fasta
-    with open ("sequences.fasta", "r") as file:
+    with open (target_file, "r") as file:
         
         #created the key and value variables for the dictionary
         gene_name = ""
@@ -37,6 +38,8 @@ def load_data():
                 sequence = ""
             
             else:
+                #add the sequence to the current gene
+                sequence += line
 
         #used to capture last gene
         if gene_name:
@@ -62,3 +65,7 @@ def load_data():
 #Your script should clearly indicate the order of steps (pipeline) 
     #by calling these functions sequentially in a main function or
     #a clearly structured code block (if __name__ == "__main__":).
+
+
+if __name__ == "__main__":
+    load_data()

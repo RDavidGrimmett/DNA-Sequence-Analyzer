@@ -55,14 +55,21 @@ def filter_sequences():
         if len(sequence) <= 100:
             del genes_and_sequences[gene_name]
 
+    print(genes_and_sequences)
+
 #write a function to calculate the GC-content 
     #(percentage of nucleotides that are either G or C) for each sequence.
-#def analysis():
+def gc_content():
+    for gene_name, sequence in genes_and_sequences.items():
+        gc_count = sequence.count("G") + sequence.count("C")
+        gc_percentage = (gc_count / len(sequence)) * 100
+        print(f"{gene_name}: GC-content = {gc_percentage:.2f}%")
+
     
 #Write a function that generates a summary table or dataframe (use pandas)
     #showing the sequence ID, length, and GC-content for each filtered sequence.
     #Save the summary table into a CSV file named sequence_summary.csv.
-#def summary_and_saving_results():
+def summary_and_saving_results():
     
 
 #Your script should clearly indicate the order of steps (pipeline) 
@@ -73,3 +80,4 @@ def filter_sequences():
 if __name__ == "__main__":
     load_data()
     filter_sequences()
+    gc_content()

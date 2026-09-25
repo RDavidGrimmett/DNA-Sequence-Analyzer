@@ -3,7 +3,7 @@
 
 
 #imported libraries
-#import pandas 
+import pandas as pd
 #import NumPy
 
 target_file = "sequences.fasta"
@@ -59,7 +59,7 @@ def filter_sequences():
 
 #write a function to calculate the GC-content 
     #(percentage of nucleotides that are either G or C) for each sequence.
-def gc_content():
+def get_gc_content():
     for gene_name, sequence in genes_and_sequences.items():
         gc_count = sequence.count("G") + sequence.count("C")
         gc_percentage = (gc_count / len(sequence)) * 100
@@ -70,7 +70,14 @@ def gc_content():
     #showing the sequence ID, length, and GC-content for each filtered sequence.
     #Save the summary table into a CSV file named sequence_summary.csv.
 def summary_and_saving_results():
-    
+    data = {'sequence ID': [], 'length': [], 'GC-content': []}
+
+    data['sequence ID'] = list(genes_and_sequences.keys())
+    data['length'] = [len(seq) for seq in genes_and_sequences.values()]
+    data['GC-content'] = [get_gc_content(gene_name, seq) for gene_name, seq in genes_and_sequences.items()]
+
+    df = pd.DataFrame(data)
+    df.to_csv("sequence_summary.csv", index=False)
 
 #Your script should clearly indicate the order of steps (pipeline) 
     #by calling these functions sequentially in a main function or
@@ -80,4 +87,5 @@ def summary_and_saving_results():
 if __name__ == "__main__":
     load_data()
     filter_sequences()
-    gc_content()
+    get_gc_content()
+    summary_and_saving_results()

@@ -1,7 +1,6 @@
 #this is dna_pipeline.py
 #Python-based bioinformatics pipeline by using reusable functions and Python libraries like pandas or NumPy.
 
-
 #Imported libraries
 import pandas as pd
 
@@ -39,7 +38,7 @@ def load_data():
                 #Add the sequence to the current gene
                 sequence += line
 
-        #Captures last gene
+        #Captures last gene as last line in the file will not start with ">"
         if gene_name:
             genes_and_sequences[gene_name] = sequence
     
@@ -65,13 +64,15 @@ def get_gc_content(gene_name, sequence):
 def summary_and_saving_results():
     #setting up the data dictionary to hold the summary information
     data = {'sequence ID': [], 'length': [], 'GC-content': []}
+
     #adding sequence ID, length, and GC-content for each gene
     data['sequence ID'] = list(genes_and_sequences.keys())
     data['length'] = [len(seq) for seq in genes_and_sequences.values()]
     data['GC-content'] = [get_gc_content(gene_name, sequence) for gene_name, sequence in genes_and_sequences.items()]
+
     #creating a pandas dataframe and saving it to a CSV file
-    df = pd.DataFrame(data)
-    df.to_csv("sequence_summary.csv", index=False)
+    data_frame = pd.DataFrame(data)
+    data_frame.to_csv("sequence_summary.csv", index=False)
 
 #running the pipeline functions in order
 if __name__ == "__main__":

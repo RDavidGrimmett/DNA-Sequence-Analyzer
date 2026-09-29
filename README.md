@@ -1,5 +1,22 @@
 # DNA-Sequence-Analyzer
-A Python-based bioinformatics pipeline
+A Python-based bioinformatics pipeline. 
+
+This pipeline allows a FASTA file input, grabs each sequence that is longer than 100 nucleotides, determines the "C/G" nucleotide percentage of each filtered sequence, then exports these sequence IDs, lengths, and C/G percentages to a CSV file.
+
+## How-To-Run
+Navigate to the directory containing dna_pipeline.py and sequences.fasta.
+
+Type the following command: 
+> python3 dna_pipeline.py
+
+
+## Included Files
+1. dna_pipeline.py
+2. sequences.fasta
+
+
+
+## Reflection
 
 
 How did breaking your script into multiple functions help make your pipeline easier to write, read, or debug?

@@ -1,7 +1,7 @@
 #this is dna_pipeline.py
 #Python-based bioinformatics pipeline by using reusable functions and Python libraries like pandas or NumPy.
 
-#Imported libraries
+#Import pandas library
 import pandas as pd
 
 #Variable to hold the target .fasta file
@@ -26,11 +26,11 @@ def load_data():
 
             #Using ">" to target the gene name
             if line.startswith(">"):
-                #Save previous gene
+                #Captures the Gene Name
                 if gene_name:
                     genes_and_sequences[gene_name] = sequence
 
-                #Starts new gene
+                #Adds gene name removing the first character
                 gene_name = line[1:]
                 sequence = ""
             
@@ -45,9 +45,9 @@ def load_data():
 
 #Filters the sequences keeping only sequences longer than 100 nucleotides
 def filter_sequences():
-    #Iterates through the dictionary removing sequences that are <= 100 nucleotides long
+    #Iterates through the dictionary removing sequences that are < 100 nucleotides long
     for gene_name, sequence in list(genes_and_sequences.items()):
-        if len(sequence) <= 100:
+        if len(sequence) < 100:
             del genes_and_sequences[gene_name]
 
 
@@ -62,19 +62,19 @@ def get_gc_content(gene_name, sequence):
     
 #Generates a summary table or dataframe (use pandas) and saves it to sequence_summary.csv.
 def summary_and_saving_results():
-    #setting up the data dictionary to hold the summary information
+    #Setting up the data dictionary to hold the summary information
     data = {'sequence ID': [], 'length': [], 'GC-content': []}
 
-    #adding sequence ID, length, and GC-content for each gene
+    #Adding sequence ID, length, and GC-content for each gene
     data['sequence ID'] = list(genes_and_sequences.keys())
     data['length'] = [len(seq) for seq in genes_and_sequences.values()]
     data['GC-content'] = [get_gc_content(gene_name, sequence) for gene_name, sequence in genes_and_sequences.items()]
 
-    #creating a pandas dataframe and saving it to a CSV file
+    #Creating a pandas dataframe and saving it to a CSV file
     data_frame = pd.DataFrame(data)
     data_frame.to_csv("sequence_summary.csv", index=False)
 
-#running the pipeline functions in order
+#Running the pipeline functions in order
 if __name__ == "__main__":
     load_data()
     filter_sequences()
